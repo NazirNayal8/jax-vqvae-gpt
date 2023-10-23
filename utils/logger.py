@@ -21,7 +21,7 @@ def get_writer(base_dir: str, disable: bool = False) -> SummaryWriter:
     )
 
 
-def log_dict(writer: SummaryWriter, logs: dict[str, Any], step: int, prefix: str = ""):
+def log_dict(writer: SummaryWriter, logs: dict, step: int, prefix: str = ""):
     for k, v in logs.items():
         if k.startswith("scalar_"):
             k = k[len("scalar_") :]

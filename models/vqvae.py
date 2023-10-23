@@ -72,7 +72,7 @@ class CnnDecoder(hk.Module):
             x = nn.relu(x)
             for _ in range(self.res_layers):
                 x = ResBlock(num_channels, self.kernel_size)(x, is_training)
-        x = hk.Conv2DTranspose(1, self.kernel_size, stride=2)(x)
+        x = hk.Conv2DTranspose(3, self.kernel_size, stride=2)(x)
         x = nn.sigmoid(x)
         return x
 
@@ -93,7 +93,7 @@ class QuantizedCodebook(hk.Module):
         initializer = hk.initializers.VarianceScaling(distribution="uniform")
         self.codebook = hk.get_parameter("codebook", (self.K, self.D), init=initializer)
 
-    def __call__(self, inputs) -> dict[str, jnp.ndarray]:
+    def __call__(self, inputs):
         """Connects the module to some inputs.
 
         Args:

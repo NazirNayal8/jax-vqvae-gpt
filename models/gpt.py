@@ -26,8 +26,12 @@ class DecoderBlock(hk.Module):
         name: Optional[str] = None,
     ):
         super().__init__(name)
+        # print(num_heads, hidden_dim, weight_init_scale, model_size)
         self.casual_atten = CasualSelfAttention(
-            num_heads, hidden_dim, weight_init_scale, model_size
+            num_heads=num_heads, 
+            key_size=hidden_dim, 
+            w_init_scale=weight_init_scale, 
+            model_size=model_size
         )
         self.dropout_rate = dropout_rate
 

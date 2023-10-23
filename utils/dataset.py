@@ -11,10 +11,10 @@ from skimage.transform import resize
 from utils.annotations import VqVaeBatch, GPTBatch
 
 
-def process_image(img, shape: tuple[int, int]) -> np.ndarray:
+def process_image(img, shape: tuple) -> np.ndarray:
     img = np.array(img, dtype=np.float32) / 255
     img = resize(img, shape)
-    img = img[..., None]
+    # img = img[..., None]
     return img
 
 
@@ -23,10 +23,10 @@ def load_dset(
     split: str,
     batch_size: int,
     percentage: int,
-    resize_shape: tuple[int, int],
+    resize_shape: tuple, # [int, int]
     repeat: bool = True,
     seed: Optional[int] = None,
-) -> tuple[Features, Iterator[tuple[int, VqVaeBatch]]]:
+):# -> tuple[Features, Iterator[tuple[int, VqVaeBatch]]]:
     """
     Loads a dataset with preprocessing, batching, and repeating.
 
@@ -50,16 +50,17 @@ def load_dset(
     features: Features = dset.features
 
     def preprocess(batch) -> VqVaeBatch:
+        # print(batch.keys())
         return {
             "image": np.array(
-                [process_image(img, resize_shape) for img in batch["image"]]
+                [process_image(img, resize_shape) for img in batch["img"]]
             ),
             "label": np.array(batch["label"]),
         }
 
     dset.set_transform(preprocess)
 
-    def iterator(dset: Dataset) -> Iterator[tuple[int, VqVaeBatch]]:
+    def iterator(dset: Dataset):# -> Iterator[tuple[int, VqVaeBatch]]:
         counter = count()
         while True:
             dset = dset.shuffle(seed)
@@ -78,7 +79,7 @@ def load_vqvae_processed(
     batch_size: int,
     repeat: bool = True,
     seed: Optional[int] = None,
-) -> tuple[Features, Iterator[tuple[int, GPTBatch]]]:
+):# -> tuple[Features, Iterator[tuple[int, GPTBatch]]]:
     dset = datasets.load.load_from_disk(str(path))
     assert isinstance(dset, Dataset)
 
@@ -92,7 +93,7 @@ def load_vqvae_processed(
 
     dset.set_transform(preprocess)
 
-    def iterator(dset: Dataset) -> Iterator[tuple[int, GPTBatch]]:
+    def iterator(dset: Dataset):# -> Iterator[tuple[int, GPTBatch]]:
         counter = count()
         while True:
             dset = dset.shuffle(seed)

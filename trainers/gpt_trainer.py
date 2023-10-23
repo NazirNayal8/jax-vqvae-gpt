@@ -87,7 +87,7 @@ class VqVaeGPTTrainer:
 
     def forward(
         self, params: hk.Params, state: hk.State, rng, tokens, is_training: bool
-    ) -> tuple[jnp.ndarray, hk.State]:
+    ):# -> tuple[jnp.ndarray, hk.State]:
         y_pred, state = self.apply(params, state, rng, tokens, is_training)
         return y_pred, state
 
@@ -100,7 +100,7 @@ class VqVaeGPTTrainer:
         return loss, state
 
     @functools.partial(jax.jit, static_argnums=0)
-    def update(self, gpt_state: GPTState, batch: GPTBatch) -> tuple[GPTState, dict]:
+    def update(self, gpt_state: GPTState, batch: GPTBatch):# -> tuple[GPTState, dict]:
         assert self.optimizer is not None
 
         rng, rng1 = jax.random.split(gpt_state.rng)
@@ -119,7 +119,7 @@ class VqVaeGPTTrainer:
         return new_gpt_state, logs
 
     @functools.partial(jax.jit, static_argnums=0)
-    def evaluate(self, gpt_state: GPTState, batch: GPTBatch) -> tuple[GPTState, dict]:
+    def evaluate(self, gpt_state: GPTState, batch: GPTBatch):# -> tuple[GPTState, dict]:
         tokens = self.tokenize(batch)
         loss, state = self.loss(gpt_state.params, gpt_state.state, None, tokens, False)
         new_gpt_state = GPTState(
@@ -136,7 +136,7 @@ class VqVaeGPTTrainer:
         padded_tokens = [[label] + [0] * output_len]
         tokens = jnp.array(padded_tokens, dtype=jnp.int32)
 
-        def body_fun(i, val: tuple[jnp.ndarray, GPTState, KeyArray]):
+        def body_fun(i, val): # tuple[jnp.ndarray, GPTState, KeyArray]
             # token shape 1 x (W * H + 1)
             tokens, gpt_state, rng = val
 

@@ -110,7 +110,7 @@ class VqVaeTrainer:
     @functools.partial(jax.jit, static_argnums=0)
     def update(
         self, vqvae_state: VqVaeState, batch: VqVaeBatch
-    ) -> tuple[VqVaeState, dict[str, Any]]:
+    ): # -> tuple[VqVaeState, dict[str, Any]]
         assert self.optimizer is not None
 
         loss_and_grad = jax.value_and_grad(self.loss, has_aux=True)
@@ -126,7 +126,7 @@ class VqVaeTrainer:
         return new_vqvae_state, logs
 
     @functools.partial(jax.jit, static_argnums=0)
-    def evaluate(self, vqvae_state: VqVaeState, batch: VqVaeBatch) -> dict[str, Any]:
+    def evaluate(self, vqvae_state: VqVaeState, batch: VqVaeBatch):# -> dict[str, Any]:
         loss, (_, result) = self.loss(
             vqvae_state.params, vqvae_state.state, batch, is_training=False
         )

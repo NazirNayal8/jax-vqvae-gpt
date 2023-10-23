@@ -1,0 +1,21 @@
+{
+    "seed": 23,
+    "dataset": "cifar10",
+    "resize_shape": [64, 64],
+    "K": 512, 
+    "D": 128,
+    "compression_level": 3,
+    "res_layers": 2,
+    "commitment_loss": 0.25,
+    "train_dset_percentage": 100,
+    "test_dset_percentage": 100,
+    "train_steps": 15000,
+    "test_steps": 50,
+    "test_every": 250,
+    "train_batch_size": 64,
+    "test_batch_size": 64,
+    "learning_rate": 3e-4,
+    "weight_decay": 1e-5,
+    "logdir": "runs/vqvae_cifar10_2reslayers_512codebooksize_64_imgsize_4compression_level",
+    "output_name": "train_state.pkl"
+}

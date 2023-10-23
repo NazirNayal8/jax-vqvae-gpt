@@ -9,7 +9,7 @@ from jax._src.random import KeyArray
 class VqVaeConfig(NamedTuple):
     seed: int
     dataset: str
-    resize_shape: tuple[int, int]
+    resize_shape: tuple
     K: int
     D: int
     compression_level: int
